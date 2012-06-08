@@ -1,0 +1,20 @@
+from urllib2 import *
+from urllib import urlencode
+
+protocol = ('http', 'https', 'ftp', 'socks')
+goagent = '127.0.0.1:8087'
+
+proxy = ProxyHandler(dict.fromkeys(protocol, goagent))
+opener = build_opener(HTTPHandler, HTTPSHandler, proxy)
+opener.addheaders = [('Accept-Encoding', '')]
+install_opener(opener)
+
+direct_opener = build_opener(HTTPHandler, HTTPSHandler)
+direct_opener.addheaders = [('Accept-Encoding', '')]
+
+class GET(Request):
+    def __init__(self, url, **kwargs):
+        if 'params' in kwargs:
+            self.url = url + '?' + urlencode(kwargs.pop(params))
+        self.url = url
+        super(Request, self).__init__(url=self.url, **kwargs)
