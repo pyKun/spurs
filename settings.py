@@ -98,7 +98,8 @@ INSTALLED_APPS = (
 )
 
 STATICFILES_DIRS = (
-    '%(PROJECT_ROOT)s/apps/test/templates/search_files' % locals(),
+    '%(PROJECT_ROOT)s/apps/test/templates/static/search_files' % locals(),
 )
 
 STATIC_URL = '%(PROJECT_ROOT)s/media/'  % locals()
+STATIC_ROOT = '%(PROJECT_ROOT)s/media/'  % locals()
