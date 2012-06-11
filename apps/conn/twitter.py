@@ -1,9 +1,9 @@
 from conn import GET, urlopen
 # TODO implement post
 
-fmt = lambda data : 'json' if data.pop('format','json') == 'json' else 'xml'
+_fmt = lambda data : 'json' if data.pop('format','json') == 'json' else 'xml'
 
-drag = lambda data, table : { key:data[key] for key in table if key in data }
+_drag = lambda data, table : { key:data.pop(key) for key in table if key in data }
 
 class retweeted_to_user(object):
     '''
@@ -21,7 +21,7 @@ class retweeted_to_user(object):
         identical to statuses/retweeted_to_me except you can choose the user to view.
     '''
     def __init__(self, **kwargs):
-        url = "http://api.twitter.com/1/statuses/retweeted_to_user.%s" % fmt(kwargs)
+        url = "http://api.twitter.com/1/statuses/retweeted_to_user.%s" % _fmt(kwargs)
         self.params_table = ('screen_name',
                              'id',
                              'count',
@@ -30,9 +30,9 @@ class retweeted_to_user(object):
                              'page',
                              'trim_user',
                              'include_entities')
-        params = drag(data=kwargs, table=self.params_table)
+        params = _drag(data=kwargs, table=self.params_table)
 
-        if not kwargs:
+        if kwargs:
             # TODO use log
             print "warning: there's excess key-word arguments: ", kwargs
 

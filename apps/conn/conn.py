@@ -13,8 +13,10 @@ direct_opener = build_opener(HTTPHandler, HTTPSHandler)
 direct_opener.addheaders = [('Accept-Encoding', '')]
 
 class GET(Request):
-    def __init__(self, url, **kwargs):
-        if 'params' in kwargs:
-            self.url = url + '?' + urlencode(kwargs.pop(params))
-        self.url = url
-        super(Request, self).__init__(url=self.url, **kwargs)
+    def __init__(self, url, params=None, **kwargs):
+        if params:
+            self.url = url + '?' + urlencode(params)
+        else:
+            self.url = url
+        #super(GET, self).__init__(self.url)
+        Request.__init__(self, self.url)
