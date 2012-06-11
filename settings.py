@@ -1,4 +1,6 @@
 # Django settings for spurs project.
+import os
+PROJECT_ROOT = os.path.dirname(__file__)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -89,11 +91,14 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
     'apps.conn',
     'apps.test',
     'apps.home',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
 )
+
+STATICFILES_DIRS = (
+    '%(PROJECT_ROOT)s/apps/test/templates/search_files' % locals(),
+)
+
+STATIC_URL = '%(PROJECT_ROOT)s/media/'  % locals()
