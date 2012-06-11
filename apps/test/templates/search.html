@@ -2,16 +2,38 @@
     <head>
         <title>Search Spurs</title>
         <style>
-            img, input {position:relative}
-            img {margin-top:175px;margin-left:500px}
-            input[type="text"] {margin-left:360px;width:550px;height:30px}
-            input[type="button"] {height:30px}
+            img.logo, div.sb {position:relative}
+            img.logo {margin-top:175px;left:500px}
+            div.sb { left:337px;height:30px;}
+            input[type="text"] {width:550px;}
         </style>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script>
+        $(function(){
+
+            function render_page (){
+                $('img.logo').remove();
+                $('div.sb').css('top','0px').css('left','0px').fadeIn();
+            };
+
+            function render_results() {
+                //XXX
+                $.get();
+            };
+
+            $('input[type="button"]').click(function(){
+                //XXX
+                render_page();
+                render_results();
+            });
+        });
+        </script>
     </head>
     <body>
-        <img src="../static/images/google.png" alt="google logo" /> <br>
-        <input type="text"></input>
-        <input type="button" value="search"></input>
+        <img class="logo" src="../static/images/logo.png" alt="google logo" />
+        <div  class='sb'>
+            <input type="text"></input>
+            <input type="button" value="Tim Duncan"></input>
+        </div>
     </body>
 </html>
