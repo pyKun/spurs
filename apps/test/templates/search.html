@@ -10,6 +10,8 @@
             ul {list-style:none;}
             ul.result {border-style:groove;border-color:red;width:500px}
             ul.result li {border-style:groove;border-color:yellow}
+            div.header {}
+            div.header div.user{float:right}
         </style>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script>
@@ -75,7 +77,15 @@
         </script>
     </head>
     <body>
-        <div class="footer"><div>
+        <div class="header">
+            <div class="user">
+                {%if user.is_authenticated%}
+                <b><i>{{user.username}}</i></b>
+                {%else%}
+                <b><i>nobody logged!</i></b>
+                {%endif%}
+            </div>
+        <div>
         <img class="logo" src="../static/images/logo.png" alt="google logo" />
         <div  class='sb'>
             <input id="txt" type="text"></input>

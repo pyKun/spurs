@@ -12,4 +12,5 @@ def dbg(request):
     return HttpResponse(hk.response)
 
 def search(request):
+    #import ipdb;ipdb.set_trace()
     return render_to_response('search.html', {})
