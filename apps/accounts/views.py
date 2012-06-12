@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.contrib.auth import authenticate, login, logout
 from django.template import RequestContext
+from django.middleware.csrf import get_token
 
 def do_login(request):
     data = request.POST
@@ -24,4 +25,5 @@ def do_logout(request):
     return HttpResponseRedirect('/test/search/')
 
 def login_page(request): # login page
-    return render_to_response('login.html', {})
+    get_token(request)
+    return render_to_response('login.html', {}, context_instance=RequestContext(request))

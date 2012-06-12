@@ -75,7 +75,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
 )
 
 ROOT_URLCONF = 'spurs.urls'

@@ -3,21 +3,21 @@
         <title>Login Page!!!!!!!!!</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script>
-        $(function(){
+        /*$(function(){
             $('input#btn').click(function(){
                 var name = $('input#name').text;
                 var pw = $('input#pw').text;
-                $.post('/do_login/', {'name':name,'pw':pw});
+                $xhr = $.ajax('/do_login/');
+                $xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
             });
-        });
+        });*/
         </script>
     </head>
     <body>
-        <div>
-            {% csrf_token %}
+        <form action="/do_login/" method="post">{% csrf_token %}
             <label>name</label><input id="name" type="text" />
             <label>password</label><input id="pw" type="password" />
-            <input id="btn" type="button" value="sure" />
-        </div>
+            <input id="btn" type="submit" value="sure" />
+        </form>
     </body>
 </html>
