@@ -4,36 +4,82 @@
         <style>
             img.logo, div.sb {position:relative}
             img.logo {margin-top:175px;left:500px}
-            div.sb { left:337px;height:30px;}
-            input[type="text"] {width:550px;}
+            div.sb { left:337px}
+            input#txt, input#btn {height:30px}
+            input#txt {width:550px;}
+            ul {list-style:none;}
+            ul.result {border-style:groove;border-color:red;width:500px}
+            ul.result li {border-style:groove;border-color:yellow}
         </style>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script>
         $(function(){
 
+            var result = '<ul class="result"></ul>';
+
             function render_page (){
-                $('img.logo').remove();
-                $('div.sb').css('top','0px').css('left','0px').fadeIn();
+                var $logo = $('img.logo');
+                var $sb = $('div.sb');
+                $logo.remove();
+                $sb.css('top','0px').css('left','0px').fadeIn();
+                //$(result).appendTo($('body'));
+                var $bd = $('body')
+                if ($bd.has('ul.result').length > 0){
+                    $bd.children('ul.result').html('');
+                }else{
+                    $bd.append(result);
+                }
             };
 
-            function render_results() {
-                //XXX
-                $.get();
+            var li = '<li class="rst"><h3 class="rt_talker"></h3><p class="rt_text"></p><b class="rt_friend"></b> send to <b class="rt_me">me</b> at <b class="time"></b></li>';
+            var err_li = '<li class="error"><p class="msg"></p></li>';
+
+            function render_result(name) {
+                $.get('/test/dbg/', {'screen_name':name}, function(data){
+                    var data = jQuery.parseJSON(data);
+                    if (data.errors != undefined){
+                        var $err_li = $( err_li );
+                        $err_li.children('p.msg').html(data.errors[0].message);
+                        $err_li.appendTo('ul.result');
+                    } else {
+                        $(data).each(function(index, element){
+                            var text = element.retweeted_status.text;
+                            var talker = element.retweeted_status.user.screen_name;
+                            var friend = element.user.screen_name;
+                            var time = element.retweeted_status.created_at;
+                            var $new = $(li);
+                            $new.children('h3.rt_talker').html(talker);
+                            $new.children('p.rt_text').html(text);
+                            $new.children('b.rt_friend').html(friend);
+                            $new.children('b.rt_me').html(kw);
+                            $new.children('b.time').html(time);
+                            $new.appendTo('ul.result');
+                        });
+                    }
+                });
             };
 
-            $('input[type="button"]').click(function(){
-                //XXX
+            var kw = '';
+            $('input#btn').click(function(){
+                kw = $('input#txt').attr('value');
                 render_page();
-                render_results();
+                render_result(kw);
+            });
+
+            $("input#txt").keyup(function(event){
+                if(event.keyCode == 13){
+                    $("input#btn").click();
+                }
             });
         });
         </script>
     </head>
     <body>
+        <div class="footer"><div>
         <img class="logo" src="../static/images/logo.png" alt="google logo" />
         <div  class='sb'>
-            <input type="text"></input>
-            <input type="button" value="Tim Duncan"></input>
+            <input id="txt" type="text"></input>
+            <input id="btn" type="button" value="Tim Duncan"></input>
         </div>
     </body>
 </html>

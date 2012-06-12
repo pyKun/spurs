@@ -1,4 +1,5 @@
 from conn import GET, urlopen
+import json
 # TODO implement post
 
 _fmt = lambda data : 'json' if data.pop('format','json') == 'json' else 'xml'
@@ -34,14 +35,14 @@ class retweeted_to_user(object):
 
         if kwargs:
             # TODO use log
-            print "warning: there's excess key-word arguments: ", kwargs
+            print "LOG: ", "warning: there's excess key-word arguments: ", kwargs
 
         self.request = GET(url, params)
-        #self.process()
 
     def process(self):
         try:
             response = urlopen(self.request)
         except Exception as e :
-            import ipdb;ipdb.set_trace()
-        self.response = response.read()
+            self.response = json.dumps(json.loads(e.read()))
+        else:
+            self.response = response.read()

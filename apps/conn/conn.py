@@ -18,5 +18,4 @@ class GET(Request):
             self.url = url + '?' + urlencode(params)
         else:
             self.url = url
-        #super(GET, self).__init__(self.url)
         Request.__init__(self, self.url)

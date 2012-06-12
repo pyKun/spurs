@@ -5,8 +5,9 @@ def google(request):
     return render_to_response('google.html', {})
 
 def dbg(request):
+    user = request.GET.get('screen_name')
     from apps.conn.twitter import retweeted_to_user as api
-    hk = api(screen_name = 'ctype2')
+    hk = api(screen_name = user, count='4')
     hk.process()
     return HttpResponse(hk.response)
 
