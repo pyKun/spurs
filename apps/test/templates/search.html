@@ -79,11 +79,11 @@
     <body>
         <div class="header">
             <div class="user">
-                {%if user.is_authenticated%}
+                {% if user.is_authenticated %}
                 <b><i>{{user.username}}</i></b>
-                {%else%}
+                {% else %}
                 <b><i>nobody logged!</i></b>
-                {%endif%}
+                {% endif %}
             </div>
         <div>
         <img class="logo" src="../static/images/logo.png" alt="google logo" />

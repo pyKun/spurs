@@ -15,8 +15,8 @@
     </head>
     <body>
         <form action="/do_login/" method="post">{% csrf_token %}
-            <label>name</label><input id="name" type="text" />
-            <label>password</label><input id="pw" type="password" />
+            <label>name</label><input id="name" type="text" name="name" />
+            <label>password</label><input id="pw" type="password" name="pw" />
             <input id="btn" type="submit" value="sure" />
         </form>
     </body>

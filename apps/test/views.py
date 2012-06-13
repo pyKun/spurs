@@ -1,4 +1,5 @@
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.http import HttpResponse
 
 def google(request):
@@ -13,4 +14,4 @@ def dbg(request):
 
 def search(request):
     #import ipdb;ipdb.set_trace()
-    return render_to_response('search.html', {})
+    return render_to_response('search.html', {}, context_instance=RequestContext(request))
