@@ -102,6 +102,7 @@ INSTALLED_APPS = (
     'apps.test',
     'apps.home',
     'apps.accounts',
+    'apps.NLP',
 )
 
 STATIC_URL = '/static/'

@@ -6,7 +6,10 @@ _fmt = lambda data : 'json' if data.pop('format','json') == 'json' else 'xml'
 
 _drag = lambda data, table : { key:data.pop(key) for key in table if key in data }
 
-class retweeted_to_user(object):
+class base_api(object):
+    pass
+
+class retweeted_to_user(base_api):
     '''
     GET statuses/retweeted_to_user
 
