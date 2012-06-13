@@ -44,5 +44,6 @@ class retweeted_to_user(object):
             response = urlopen(self.request)
         except Exception as e :
             self.response = json.dumps(json.loads(e.read()))
+            print "LOG: ", "warning: errors happens: %s" % self.response
         else:
             self.response = response.read()

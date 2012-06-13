@@ -4,14 +4,15 @@
         <style>
             img.logo, div.sb {position:relative}
             img.logo {margin-top:175px;left:500px}
-            div.sb { left:337px}
+            div.sb { left:337px;width:645px;}
             input#txt, input#btn {height:30px}
             input#txt {width:550px;}
             ul {list-style:none;}
             ul.result {border-style:groove;border-color:red;width:500px}
             ul.result li {border-style:groove;border-color:yellow}
-            div.header {}
-            div.header div.user{float:right}
+            div.header {background-color:#2D2D2D;height:25px;margin:-8 -8 0 -8;}
+            div.header span.func {color:#CCC;}
+            div.header div.user{float:right;color:#CCC;height:auto}
         </style>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script>
@@ -39,7 +40,11 @@
             function render_result(name) {
                 $.get('/test/dbg/', {'screen_name':name}, function(data){
                     var data = jQuery.parseJSON(data);
-                    if (data.errors != undefined){
+                    if (data.error != undefined){
+                        var $err_li = $( err_li );
+                        $err_li.children('p.msg').html(data.error);
+                        $err_li.appendTo('ul.result');
+                    } else if(data.errors != undefined){
                         var $err_li = $( err_li );
                         $err_li.children('p.msg').html(data.errors[0].message);
                         $err_li.appendTo('ul.result');
@@ -78,6 +83,11 @@
     </head>
     <body>
         <div class="header">
+            <span class="func">功能1</span>
+            <span class="func">功能2</span>
+            <span class="func">功能3</span>
+            <span class="func">功能4</span>
+            <span class="func">功能5</span>
             <div class="user">
                 {% if user.is_authenticated %}
                 <b><i>{{user.username}}</i></b>
@@ -85,7 +95,7 @@
                 <b><i>nobody logged!</i></b>
                 {% endif %}
             </div>
-        <div>
+        </div>
         <img class="logo" src="../static/images/logo.png" alt="google logo" />
         <div  class='sb'>
             <input id="txt" type="text"></input>
