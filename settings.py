@@ -103,6 +103,7 @@ INSTALLED_APPS = (
     'apps.home',
     'apps.accounts',
     'apps.NLP',
+    'apps.tweepy',
 )
 
 STATIC_URL = '/static/'
