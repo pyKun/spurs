@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>Account Test</title>
+        <style>
+        div.user {width:800px;border:1px solid rgba(50,50,50,0.25)}
+        div.basic span.name, div.basic input.updmsg, div.basic button.updmsg {float:left}
+        div.basic span.name {width:}
+        div.basic {height:88px;width:220px}
+
+        div.api div.smy, div.api div.tstbtn, div.api div.rctmsg {float:left}
+        div.api {overflow:auto;width:54%}
+        </style>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script>
+        $(function(){
+            //bind buttons event
+            $('div.basic button.updmsg').click(function(){
+                //update by all
+                var msg = $('div.basic input.updmsg').val();
+                var api = 'all';
+                console.log('update ' + msg + ' by ' + api);
+                $.get('/test/dbg2/',{'msg':msg,'api':api},function(data){});
+            });
+            $('div.api button.updmsg').click(function(){
+                //update by specific api
+                var msg = $(this).siblings('input.updmsg').val();
+                var api = $(this).parent().siblings('.smy').children('span.name').html()
+                console.log('update ' + msg + ' by ' + api);
+                $.get('/test/dbg2/',{'msg':msg,'api':api},function(data){});
+            });
+        });
+        </script>
+    </head>
+    <body>
+    {%for user in users%}
+        <div class="user">
+            <div class="basic">
+                <span class="name">{{user.name}}</span>
+                <input type="text" class="updmsg" />
+                <button type="button" value="Spurs" class="updmsg">Spurs</button>
+            </div>
+            {%for api in apis%}
+            <div class="api">
+                <div class="smy">
+                    <span class="name">{{api.name}}</span>
+                </div>
+                <div class="tstbtn">
+                    <input type="text" class="updmsg" />
+                    <button type="button" value="Spurs" class="updmsg">Spurs</button>
+                </div>
+                <div class="rctmsg">
+                    <span class="access-token" title="access-token">3AA9kHb18Z1hOUcYb7oMxkNM92FQ3D</span>
+                    <p>your recent message will be presented here.</p>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+    {%endfor%}
+    </body>
+</html>
