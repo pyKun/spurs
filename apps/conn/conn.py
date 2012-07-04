@@ -18,4 +18,12 @@ class GET(Request):
             self.url = url + '?' + urlencode(params)
         else:
             self.url = url
+        print 'GET ', self.url
         Request.__init__(self, self.url)
+
+class POST(Request):
+    def __init__(self, url, params=None, **kwargs):
+        self.url = url
+        data = urlencode(params)
+        print 'POST ', self.url
+        Request.__init__(self, self.url, data=data)

@@ -6,6 +6,7 @@ urlpatterns = patterns('apps.test.views',
     (r'^dbg/$', 'dbg'),
     (r'^dbg2/$', 'dbg2'),
     (r'^search/$', 'search'),
+    (r'^update/$', 'update'),
     (r'^$', 'test'),
     (r'^account_test/$', 'account_test_page'),
 )

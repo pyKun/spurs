@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>token got!!!!!!!!!</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script>
+        $(function(){
+            var hash = window.location.hash.substring(1);
+            $.get('/test/update/?' + hash,{},function(){
+                // redirect
+                window.location = '/test/account_test/';
+            });
+
+        });
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

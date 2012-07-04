@@ -8,25 +8,39 @@
         div.basic {height:88px;width:220px}
 
         div.api div.smy, div.api div.tstbtn, div.api div.rctmsg {float:left}
-        div.api {overflow:auto;width:54%}
+        div.api {border:1px solid rgba(150,150,150,0.25);overflow:auto;width:54%}
+        div.user div.basic span.acstk {margin:5px;border:1px solid rgba(25,25,25,0.5);}
         </style>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script>
         $(function(){
             //bind buttons event
+            function render(data){
+                var data = jQuery.parseJSON(data);
+                $(data.statuses).each(function(index, mb){
+                    var name = mb.user.screen_name;
+                    var txt = mb.text;
+                    console.log(name+txt);
+                });
+            };
+
             $('div.basic button.updmsg').click(function(){
                 //update by all
                 var msg = $('div.basic input.updmsg').val();
                 var api = 'all';
                 console.log('update ' + msg + ' by ' + api);
-                $.get('/test/dbg2/',{'msg':msg,'api':api},function(data){});
+                $.get('/test/dbg2/',{'msg':msg,'api':api},function(data){
+                    render(data);
+                });
             });
             $('div.api button.updmsg').click(function(){
                 //update by specific api
                 var msg = $(this).siblings('input.updmsg').val();
                 var api = $(this).parent().siblings('.smy').children('span.name').html()
                 console.log('update ' + msg + ' by ' + api);
-                $.get('/test/dbg2/',{'msg':msg,'api':api},function(data){});
+                $.get('/test/dbg2/',{'msg':msg,'api':api},function(data){
+                    render(data);
+                });
             });
         });
         </script>
@@ -36,6 +50,7 @@
         <div class="user">
             <div class="basic">
                 <span class="name">{{user.name}}</span>
+                {%for api in apis%}<span class="acstk"><a href="{{api.url}}" title="{{api.token}}">{{api.name}}</a></span>{%endfor%}
                 <input type="text" class="updmsg" />
                 <button type="button" value="Spurs" class="updmsg">Spurs</button>
             </div>
@@ -49,7 +64,7 @@
                     <button type="button" value="Spurs" class="updmsg">Spurs</button>
                 </div>
                 <div class="rctmsg">
-                    <span class="access-token" title="access-token">3AA9kHb18Z1hOUcYb7oMxkNM92FQ3D</span>
+                    <span class="access-token" title="access-token">{{api.token}}</span>
                     <p>your recent message will be presented here.</p>
                 </div>
             </div>

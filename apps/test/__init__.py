@@ -1,0 +1,1 @@
+global sina_access_token
