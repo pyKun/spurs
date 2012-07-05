@@ -53,8 +53,8 @@ def account_test_page(request):
     global sina_access_token
     hk = {'name':'huangkun'}
     sina = {'name':'sina','url':'https://api.weibo.com/oauth2/authorize?client_id=1126538078&redirect_uri=http://127.0.0.1:8000/token/&response_type=token','token':sina_access_token}
-    twitter = {'name':'twitter','url':'','token':'xsxsxsxsxsxsxsxsx'}
-    tweepy = {'name':'tweepy','url':'','token':'asadasdasdasdasdasd'}
+    twitter = {'name':'twitter','url':'#','token':'not supported'}
+    tweepy = {'name':'tweepy','url':'#','token':'not supported'}
     data = {'users':[hk],
             'apis':[sina, twitter, tweepy]}
     return render_to_response('account_test.html', data, context_instance=RequestContext(request))
@@ -62,11 +62,14 @@ def account_test_page(request):
 def update_sina_msg():
     global sina_access_token
     from apps.conn.sina import user_timeline as api
-    rq = api(screen_name='ctypes',count='5',access_token=sina_access_token)
+    rq = api(screen_name='',count='5',access_token=sina_access_token)
     rq.process()
     return rq.response
 def update_twitter_msg():
-    return
+    from apps.conn.twitter import home_timeline as api
+    rq = api(count='5')
+    rq.process()
+    return rq.response
 def update_tweepy_msg():
     return
 
@@ -74,13 +77,13 @@ def dbg2(request):
     msg = request.GET.get('msg')
     api = request.GET.get('api')
     if api == 'all':
-        r = update_by_all(msg)
+        r = update_by_all(msg + ' by Spurs')
     elif api == 'twitter':
-        r = update_by_twitter(msg)
+        r = update_by_twitter(msg + ' By Spurs-tw')
     elif api =='sina':
-        r = update_by_sina(msg)
+        r = update_by_sina(msg + ' By Spurs-sina')
     elif api == 'tweepy':
-        r = update_by_tweepy(msg)
+        r = update_by_tweepy(msg + ' By Spurs-twe')
 
     if r:
         return HttpResponse(r)
@@ -88,16 +91,26 @@ def dbg2(request):
         return HttpResponse('errors happen')
 
 def update_by_sina(msg):
-    # 1st update status
-    newest = update_sina_msg()
-    # update status board
+    # update status
     from apps.conn.sina import sina_update
     update = sina_update(access_token=sina_access_token, status=msg)
     update.process()
+
+    # update board
+    newest = update_sina_msg()
+    print '# sina update response: ',newest
     return newest
 
-def update_by_twitter():
-    return
+def update_by_twitter(msg):
+    # update status
+    from apps.conn.twitter import update as api
+    update = api(status=msg)
+    update.process()
+
+    # update board
+    newest = update_twitter_msg()
+    print '# twitter update response: ',newest
+    return newest
 
 def update_by_tweepy():
     return

@@ -19,11 +19,11 @@ class GET(Request):
         else:
             self.url = url
         print 'GET ', self.url
-        Request.__init__(self, self.url)
+        Request.__init__(self, self.url, **kwargs)
 
 class POST(Request):
     def __init__(self, url, params=None, **kwargs):
         self.url = url
         data = urlencode(params)
-        print 'POST ', self.url
-        Request.__init__(self, self.url, data=data)
+        print 'POST ', self.url, data
+        Request.__init__(self, self.url, data=data, **kwargs)

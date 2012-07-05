@@ -10,20 +10,12 @@
         div.api div.smy, div.api div.tstbtn, div.api div.rctmsg {float:left}
         div.api {border:1px solid rgba(150,150,150,0.25);overflow:auto;width:54%}
         div.user div.basic span.acstk {margin:5px;border:1px solid rgba(25,25,25,0.5);}
+        ul.border {list-style:none;}
         </style>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script>
         $(function(){
             //bind buttons event
-            function render(data){
-                var data = jQuery.parseJSON(data);
-                $(data.statuses).each(function(index, mb){
-                    var name = mb.user.screen_name;
-                    var txt = mb.text;
-                    console.log(name+txt);
-                });
-            };
-
             $('div.basic button.updmsg').click(function(){
                 //update by all
                 var msg = $('div.basic input.updmsg').val();
@@ -35,11 +27,23 @@
             });
             $('div.api button.updmsg').click(function(){
                 //update by specific api
-                var msg = $(this).siblings('input.updmsg').val();
-                var api = $(this).parent().siblings('.smy').children('span.name').html()
-                console.log('update ' + msg + ' by ' + api);
+                var $this = $(this);
+                var msg = $this.siblings('input.updmsg').val();
+                var api = $this.parent().siblings('.smy').children('span.name').html()
                 $.get('/test/dbg2/',{'msg':msg,'api':api},function(data){
-                    render(data);
+                    var data = jQuery.parseJSON(data);
+                    var name = '';
+                    var txt = '';
+                    var new_li = '';
+                    $(data.statuses).each(function(index, mb){
+                        name = mb.user.screen_name;
+                        txt = mb.text;
+                        new_li = new_li + '<li>'+name+': ' + txt + '</li>';
+                        console.log(name+txt);
+                    });
+                    var new_ul = '<ul class="board">' + new_li + '</ul>';
+                    $this.parent().siblings('.rctmsg').children('ul.board').remove();
+                    $(new_ul).appendTo($this.parent().siblings('.rctmsg'));
                 });
             });
         });
@@ -65,7 +69,7 @@
                 </div>
                 <div class="rctmsg">
                     <span class="access-token" title="access-token">{{api.token}}</span>
-                    <p>your recent message will be presented here.</p>
+                    <p class="board">your recent message will be presented here.</p>
                 </div>
             </div>
             {%endfor%}
