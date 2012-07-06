@@ -15,6 +15,33 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script>
         $(function(){
+            function render(data){
+                var name = '';
+                var txt = '';
+                var new_li = '';
+                $(data).each(function(i,ele){
+                    name = ele.user.screen_name;
+                    txt = ele.text;
+                    new_li = new_li + '<li>'+name+': ' + txt + '</li>';
+                });
+                var new_ul = '<ul class="board">' + new_li + '</ul>';
+                return new_ul
+            };
+            function render_sina(data){
+                var $p = $('.sina .rctmsg');
+                var ul = render(data.statuses);
+                $(ul).appendTo($p);
+            };
+            function render_twitter(data){
+                var $p = $('.twitter .rctmsg');
+                var ul = render(data);
+                $(ul).appendTo($p);
+            };
+            function render_tweepy(data){
+                var $p = $('.tweepy .rctmsg');
+                var ul = render(data);
+                $(ul).appendTo($p);
+            };
             //bind buttons event
             $('div.basic button.updmsg').click(function(){
                 //update by all
@@ -22,7 +49,14 @@
                 var api = 'all';
                 console.log('update ' + msg + ' by ' + api);
                 $.get('/test/dbg2/',{'msg':msg,'api':api},function(data){
-                    render(data);
+                    // TODO render data
+                    var data = jQuery.parseJSON(data);
+                    var sina = data.sina;
+                    var twitter = data.twitter;
+                    var tweepy = data.tweepy;
+                    render_sina(sina);
+                    render_twitter(twitter);
+                    render_tweepy(tweepy);
                 });
             });
             $('div.api button.updmsg').click(function(){
@@ -31,11 +65,17 @@
                 var msg = $this.siblings('input.updmsg').val();
                 var api = $this.parent().siblings('.smy').children('span.name').html()
                 $.get('/test/dbg2/',{'msg':msg,'api':api},function(data){
-                    var data = jQuery.parseJSON(data);
+                    if (api == 'sina'){
+                        var data = jQuery.parseJSON(data).statuses;
+                    } else if (api == 'twitter'){
+                        var data = jQuery.parseJSON(data);
+                    } else if (api =='tweepy'){
+                        var data = jQuery.parseJSON(data);
+                    }
                     var name = '';
                     var txt = '';
                     var new_li = '';
-                    $(data.statuses).each(function(index, mb){
+                    $(data).each(function(index, mb){
                         name = mb.user.screen_name;
                         txt = mb.text;
                         new_li = new_li + '<li>'+name+': ' + txt + '</li>';
@@ -59,7 +99,7 @@
                 <button type="button" value="Spurs" class="updmsg">Spurs</button>
             </div>
             {%for api in apis%}
-            <div class="api">
+            <div class="api {{api.name}}">
                 <div class="smy">
                     <span class="name">{{api.name}}</span>
                 </div>

@@ -15,8 +15,8 @@ twitter_setting = {'oauth_consumer_key':'tXNzsla1b609W3w5lytRA',
                    'oauth_timestamp':None,
                    'oauth_token':'593651382-RhxpHzUoijOTmE4DUehQP7Qmggp9PA7EDTUt40SY',
                    'oauth_version':'1.0',
-                   'consumer_sercet':'krrpvHoogodzS7LCJaAa5VJy1Y9o3ZoD1imkaqEifY',
-                   'token_sercet':'nji7AnWjt3GDZrqCMz3PDT63XepGsGaA2VFq6LPCAQ'}
+                   'consumer_secret':'krrpvHoogodzS7LCJaAa5VJy1Y9o3ZoD1imkaqEifY',
+                   'token_secret':'nji7AnWjt3GDZrqCMz3PDT63XepGsGaA2VFq6LPCAQ'}
 
 class base_api(object):
     def get_signature(self, url, method):
@@ -25,7 +25,7 @@ class base_api(object):
         import hmac
         import binascii
 
-        _key = self.ts.pop('consumer_sercet') + '&' + self.ts.pop('token_sercet')
+        _key = self.ts.pop('consumer_secret') + '&' + self.ts.pop('token_secret')
 
         temp = [q(key)+'='+q(value) for key, value in copy.deepcopy(self.ts).iteritems() if value]
         temp.extend([q(key)+'='+q(value) for key, value in self.params.iteritems() if value])
@@ -124,15 +124,15 @@ class update(base_api):
         self.request = POST(url, self.params, headers={'Authorization':headers})
 
 
-class home_timeline(base_api):
+class user_timeline(base_api):
     '''
     POST statuses/home_timeline
 
     Document URL:
-        https://dev.twitter.com/docs/api/1/get/statuses/home_timeline
+        https://dev.twitter.com/docs/api/1/get/statuses/user_timeline
 
     Resource URL:
-        http://api.twitter.com/1/statuses/home_timeline.format
+        http://api.twitter.com/1/statuses/user_timeline.format
 
     Description:
         Returns the most recent statuses, including retweets if they exist, posted by
@@ -148,7 +148,7 @@ class home_timeline(base_api):
         See Working with Timelines for instructions on traversing timelines.
     '''
     def __init__(self, **kwargs):
-        url = "http://api.twitter.com/1/statuses/home_timeline.%s" % _fmt(kwargs)
+        url = "http://api.twitter.com/1/statuses/user_timeline.%s" % _fmt(kwargs)
         self.params_table = ('count',)
         self.params = _drag(data=kwargs, table=self.params_table)
 
