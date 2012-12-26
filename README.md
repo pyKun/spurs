@@ -1,4 +1,4 @@
 spurs
 =====
 
-额 啥都木有啊
+obsolete
